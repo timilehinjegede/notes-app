@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notesapp/screens/detail_category.dart';
 import 'package:notesapp/screens/home.dart';
 
 void main() {
@@ -10,6 +11,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {
+      },
       debugShowCheckedModeBanner: false,
       home: HomeScreen(),
     );

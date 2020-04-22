@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:notesapp/models/note.dart';
+import 'package:notesapp/screens/detail_category.dart';
 import 'package:notesapp/screens/widgets/custom_card.dart';
 import 'package:notesapp/screens/widgets/menu_button.dart';
+import 'package:notesapp/utils/colors.dart';
 import 'package:notesapp/utils/images.dart';
 import 'package:notesapp/utils/styles.dart';
 import 'package:path_provider/path_provider.dart';
@@ -36,13 +38,21 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.add,
+          size: 25,
+          color: kWhite,
+        ),
+        onPressed: () => print('add me'),
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           GestureDetector(
             onTap: () => print('Working'),
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
+              padding: const EdgeInsets.fromLTRB(20, 40, 20, 10),
               child: MenuButton(),
             ),
           ),
@@ -61,13 +71,23 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Padding(
               padding: const EdgeInsets.only(left: 10, right: 10),
               child: GridView.count(
+                padding: EdgeInsets.zero,
                 crossAxisCount: 2,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
                 childAspectRatio: 1.1,
                 children: <Widget>[
                   GestureDetector(
-                    onTap: () => print('all'),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailCategoryScreen(
+                          category: 'All',
+                          img: all,
+                          noteNum: 23,
+                        ),
+                      ),
+                    ),
                     child: CustomCard(
                       title: 'All',
                       imgPath: all,
@@ -75,7 +95,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () => print('work'),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailCategoryScreen(
+                          category: 'Work',
+                          img: work,
+                          noteNum: 14,
+                        ),
+                      ),
+                    ),
                     child: CustomCard(
                       title: 'Work',
                       imgPath: work,
@@ -83,7 +112,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () => print('music'),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailCategoryScreen(
+                          category: 'Music',
+                          img: music,
+                          noteNum: 6,
+                        ),
+                      ),
+                    ),
                     child: CustomCard(
                       title: 'Music',
                       imgPath: music,
@@ -91,7 +129,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () => print('travel'),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailCategoryScreen(
+                          category: 'Travel',
+                          img: travel,
+                          noteNum: 1,
+                        ),
+                      ),
+                    ),
                     child: CustomCard(
                       title: 'Travel',
                       imgPath: travel,
@@ -99,7 +146,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () => print('study'),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailCategoryScreen(
+                          category: 'Study',
+                          img: study,
+                          noteNum: 2,
+                        ),
+                      ),
+                    ),
                     child: CustomCard(
                       title: 'Study',
                       imgPath: study,
@@ -107,7 +163,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () => print('home'),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailCategoryScreen(
+                          category: 'Home',
+                          img: home,
+                          noteNum: 14,
+                        ),
+                      ),
+                    ),
                     child: CustomCard(
                       title: 'Home',
                       imgPath: home,
@@ -115,7 +180,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () => print('play'),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailCategoryScreen(
+                          category: 'Play',
+                          img: play,
+                          noteNum: 0,
+                        ),
+                      ),
+                    ),
                     child: CustomCard(
                       title: 'Play',
                       imgPath: play,
@@ -123,7 +197,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () => print('shop'),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailCategoryScreen(
+                          category: 'Shop',
+                          img: shop,
+                          noteNum: 6,
+                        ),
+                      ),
+                    ),
                     child: CustomCard(
                       title: 'Shop',
                       imgPath: shop,
