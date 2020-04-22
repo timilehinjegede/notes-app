@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:notesapp/models/note.dart';
 import 'package:notesapp/screens/detail_category.dart';
+import 'package:notesapp/screens/new_note.dart';
 import 'package:notesapp/screens/widgets/custom_card.dart';
-import 'package:notesapp/screens/widgets/menu_button.dart';
 import 'package:notesapp/utils/colors.dart';
 import 'package:notesapp/utils/images.dart';
 import 'package:notesapp/utils/styles.dart';
@@ -44,20 +45,16 @@ class _HomeScreenState extends State<HomeScreen> {
           size: 25,
           color: kWhite,
         ),
-        onPressed: () => print('add me'),
+        onPressed: () async {
+          await Navigator.pushNamed(context, NewNoteScreen.routeName);
+          setState(() {});
+        },
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          GestureDetector(
-            onTap: () => print('Working'),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 40, 20, 10),
-              child: MenuButton(),
-            ),
-          ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            padding: EdgeInsets.fromLTRB(20, 50, 20, 30),
             child: Text(
               'Lists',
               style: textStyle(
@@ -67,155 +64,171 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10),
-              child: GridView.count(
-                padding: EdgeInsets.zero,
-                crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                childAspectRatio: 1.1,
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailCategoryScreen(
-                          category: 'All',
-                          img: all,
-                          noteNum: 23,
+          ValueListenableBuilder(
+            valueListenable: Hive.box('noteBox').listenable(),
+            builder: (context, box, widget) {
+
+              // convert box value into a list
+              List<dynamic> boxList = box.values.toList();
+
+              // function to filter the list
+              int fromList(String filterString) {
+                return boxList
+                    .where((element) => element.category == filterString)
+                    .toList()
+                    .length;
+              }
+              return Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: GridView.count(
+                    padding: EdgeInsets.zero,
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 1.1,
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailCategoryScreen(
+                              category: 'All',
+                              img: all,
+                              noteNum: boxList.length,
+                            ),
+                          ),
+                        ),
+                        child: CustomCard(
+                          title: 'All',
+                          imgPath: all,
+                          taskNum: boxList.length,
                         ),
                       ),
-                    ),
-                    child: CustomCard(
-                      title: 'All',
-                      imgPath: all,
-                      taskNum: 23,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailCategoryScreen(
-                          category: 'Work',
-                          img: work,
-                          noteNum: 14,
+                      GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailCategoryScreen(
+                              category: 'Work',
+                              img: music,
+                              noteNum: fromList('Work'),
+                            ),
+                          ),
+                        ),
+                        child: CustomCard(
+                          title: 'Work',
+                          imgPath: work,
+                          taskNum: fromList('Work'),
                         ),
                       ),
-                    ),
-                    child: CustomCard(
-                      title: 'Work',
-                      imgPath: work,
-                      taskNum: 14,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailCategoryScreen(
-                          category: 'Music',
-                          img: music,
-                          noteNum: 6,
+                      GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailCategoryScreen(
+                              category: 'Music',
+                              img: music,
+                              noteNum: fromList('Music'),
+                            ),
+                          ),
+                        ),
+                        child: CustomCard(
+                          title: 'Music',
+                          imgPath: music,
+                          taskNum: fromList('Music'),
                         ),
                       ),
-                    ),
-                    child: CustomCard(
-                      title: 'Music',
-                      imgPath: music,
-                      taskNum: 6,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailCategoryScreen(
-                          category: 'Travel',
-                          img: travel,
-                          noteNum: 1,
+                      GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailCategoryScreen(
+                              category: 'Travel',
+                              img: travel,
+                              noteNum: fromList('Travel'),
+                            ),
+                          ),
+                        ),
+                        child: CustomCard(
+                          title: 'Travel',
+                          imgPath: travel,
+                          taskNum: fromList('Travel'),
                         ),
                       ),
-                    ),
-                    child: CustomCard(
-                      title: 'Travel',
-                      imgPath: travel,
-                      taskNum: 1,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailCategoryScreen(
-                          category: 'Study',
-                          img: study,
-                          noteNum: 2,
+                      GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailCategoryScreen(
+                              category: 'Study',
+                              img: study,
+                              noteNum: fromList('Study'),
+                            ),
+                          ),
+                        ),
+                        child: CustomCard(
+                          title: 'Study',
+                          imgPath: study,
+                          taskNum: fromList('Study'),
                         ),
                       ),
-                    ),
-                    child: CustomCard(
-                      title: 'Study',
-                      imgPath: study,
-                      taskNum: 2,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailCategoryScreen(
-                          category: 'Home',
-                          img: home,
-                          noteNum: 14,
+                      GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailCategoryScreen(
+                              category: 'Home',
+                              img: home,
+                              noteNum: fromList('Home'),
+                            ),
+                          ),
+                        ),
+                        child: CustomCard(
+                          title: 'Home',
+                          imgPath: home,
+                          taskNum: fromList('Home'),
                         ),
                       ),
-                    ),
-                    child: CustomCard(
-                      title: 'Home',
-                      imgPath: home,
-                      taskNum: 14,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailCategoryScreen(
-                          category: 'Play',
-                          img: play,
-                          noteNum: 0,
+                      GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailCategoryScreen(
+                              category: 'Play',
+                              img: play,
+                              noteNum: fromList('Play'),
+                            ),
+                          ),
+                        ),
+                        child: CustomCard(
+                          title: 'Play',
+                          imgPath: play,
+                          taskNum: fromList('Play'),
                         ),
                       ),
-                    ),
-                    child: CustomCard(
-                      title: 'Play',
-                      imgPath: play,
-                      taskNum: 0,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailCategoryScreen(
-                          category: 'Shop',
-                          img: shop,
-                          noteNum: 6,
+                      GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailCategoryScreen(
+                              category: 'Shop',
+                              img: shop,
+                              noteNum: fromList('Shop'),
+                            ),
+                          ),
+                        ),
+                        child: CustomCard(
+                          title: 'Shop',
+                          imgPath: shop,
+                          taskNum: fromList('Shop'),
                         ),
                       ),
-                    ),
-                    child: CustomCard(
-                      title: 'Shop',
-                      imgPath: shop,
-                      taskNum: 6,
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           )
         ],
       ),

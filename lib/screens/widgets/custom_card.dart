@@ -44,7 +44,7 @@ class CustomCard extends StatelessWidget {
             ),
             YMargin(5),
             Text(
-              '$taskNum ${taskNum > 1 ? 'Tasks' : 'Task'}',
+              '$taskNum ${taskNum > 1 ? 'Notes' : 'Note'}',
               style: textStyle(
                 size: 14,
                 weight: 3,

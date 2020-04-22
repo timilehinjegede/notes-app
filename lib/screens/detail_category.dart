@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:notesapp/screens/new_note.dart';
 import 'package:notesapp/utils/colors.dart';
 import 'package:notesapp/utils/margin.dart';
 import 'package:notesapp/utils/resolution.dart';
@@ -52,7 +55,9 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
                       color: kWhite,
                       borderRadius: BorderRadius.circular(25),
                       image: DecorationImage(
-                          image: widget.img, fit: BoxFit.contain,),
+                        image: widget.img,
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                   YMargin(10),
@@ -83,18 +88,38 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
               ),
               color: kWhite,
             ),
-            child: ListView.builder(
-              itemBuilder: (BuildContext context, int index) => Column(
-                children: <Widget>[
-                  _myNoteTile(
-                    'Thhis is a note',
-                    'This is a description,This is a description,This is a description,This is a description,This is a description,This is a description,This is a description,This is a description,This is a description,This is a description,This is a description,This is a description,This is a description,This is a description,This is a description,This is a y e wsin dcinsc,',
-                    '27, Mar 2020',
-                  ),
-                  Divider(thickness: 1,),
-                ],
-              ),
-              itemCount: 20,
+            child: ValueListenableBuilder(
+              valueListenable: Hive.box('noteBox').listenable(),
+              builder: (context, box, child) {
+                List<dynamic> boxList = box.values.toList();
+                return widget.noteNum != 0
+                    ? ListView.builder(
+                        itemBuilder: (BuildContext context, int index) =>
+                            Column(
+                          children: <Widget>[
+                            _myNoteTile(
+                              boxList[index].title,
+                              boxList[index].description,
+                              boxList[index].dateLastEdited.toString(),
+                            ),
+                            Divider(
+                              thickness: 1,
+                            ),
+                          ],
+                        ),
+                        itemCount: boxList.length,
+                      )
+                    : Center(
+                        child: Text(
+                          'Oops... Empty Note',
+                          style: textStyle(
+                            size: 14,
+                            color: kGreyBlack,
+                            weight: 6,
+                          ),
+                        ),
+                      );
+              },
             ),
           ),
         ],
@@ -127,7 +152,7 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
           overflow: TextOverflow.ellipsis,
           softWrap: true,
         ),
-        YMargin(5),
+        YMargin(10),
         Align(
           alignment: Alignment.bottomRight,
           child: Text(
