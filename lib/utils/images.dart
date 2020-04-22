@@ -15,3 +15,5 @@ AssetImage home = AssetImage('assets/images/home.png') ;
 AssetImage play = AssetImage('assets/images/play.png') ;
 
 AssetImage shop = AssetImage('assets/images/shop.png') ;
+
+AssetImage category = AssetImage('assets/images/tag.png') ;

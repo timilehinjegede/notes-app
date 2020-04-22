@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:notesapp/screens/new_note.dart';
 import 'package:notesapp/utils/colors.dart';
 import 'package:notesapp/utils/margin.dart';
 import 'package:notesapp/utils/resolution.dart';
@@ -92,6 +91,12 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
               valueListenable: Hive.box('noteBox').listenable(),
               builder: (context, box, child) {
                 List<dynamic> boxList = box.values.toList();
+
+                // filter the list based on category
+                boxList = boxList
+                    .where((element) => element.category == widget.category)
+                    .toList();
+
                 return widget.noteNum != 0
                     ? ListView.builder(
                         itemBuilder: (BuildContext context, int index) =>
@@ -107,11 +112,11 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
                             ),
                           ],
                         ),
-                        itemCount: boxList.length,
+                        itemCount: widget.noteNum,
                       )
                     : Center(
                         child: Text(
-                          'Oops... Empty Note',
+                          'Oops... Empty Category',
                           style: textStyle(
                             size: 14,
                             color: kGreyBlack,
@@ -138,6 +143,7 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
             size: 16,
             weight: 6,
           ),
+          maxLines: 1,
         ),
         YMargin(5),
         Text(
