@@ -129,6 +129,7 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
                   fit: BoxFit.cover,
                 ),
                 XMargin(15),
+//                Text(dropdownValue),
                 XMargin(5),
                 DropdownButton<String>(
                   value: dropdownValue,
@@ -152,7 +153,7 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
                   ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(value.toString(),),
+                      child: Text(value),
                     );
                   }).toList(),
                 ),

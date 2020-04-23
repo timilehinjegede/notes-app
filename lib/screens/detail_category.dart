@@ -1,16 +1,20 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:notesapp/models/note.dart';
 import 'package:notesapp/utils/colors.dart';
 import 'package:notesapp/utils/margin.dart';
 import 'package:notesapp/utils/resolution.dart';
 import 'package:notesapp/utils/styles.dart';
 
+// ignore: must_be_immutable
 class DetailCategoryScreen extends StatefulWidget {
   static final String routeName = 'detailcategory';
 
   final String category;
-  final int noteNum;
+  int noteNum;
   final AssetImage img;
 
   DetailCategoryScreen({this.category, this.noteNum, this.img});
@@ -20,6 +24,8 @@ class DetailCategoryScreen extends StatefulWidget {
 }
 
 class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
+  int listLength;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,27 +98,69 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
               builder: (context, box, child) {
                 List<dynamic> boxList = box.values.toList();
 
+                // box without filtering
+                List<dynamic> allBox = box.values.toList();
+
                 // filter the list based on category
                 boxList = boxList
                     .where((element) => element.category == widget.category)
                     .toList();
 
+                listLength = allBox.length;
+
                 return widget.noteNum != 0
                     ? ListView.builder(
+                        itemCount: widget.category == 'All'
+                            ? allBox.length
+                            : widget.noteNum,
                         itemBuilder: (BuildContext context, int index) =>
                             Column(
                           children: <Widget>[
-                            _myNoteTile(
-                              boxList[index].title,
-                              boxList[index].description,
-                              boxList[index].dateLastEdited.toString(),
+                            Dismissible(
+                              key: UniqueKey(),
+                              onDismissed: (direction) {
+                                setState(
+                                  () {
+                                    box.deleteAt(index);
+                                    widget.noteNum--;
+                                  },
+                                );
+                                Scaffold.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      "Note Deleted",
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: _myNoteTile(
+                                widget.category == 'All'
+                                    ? allBox[index].title.toString()
+                                    : boxList[index].title,
+                                widget.category == 'All'
+                                    ? allBox[index].description.toString()
+                                    : boxList[index].description,
+                                widget.category == 'All'
+                                    ? allBox[index].dateLastEdited.toString()
+                                    : boxList[index].dateLastEdited.toString(),
+                              ),
+                              background: Container(
+                                padding: EdgeInsets.only(right: 20),
+                                color: Colors.red,
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Icon(
+                                    Icons.delete,
+                                    color: kWhite,
+                                  ),
+                                ),
+                              ),
                             ),
                             Divider(
                               thickness: 1,
                             ),
                           ],
                         ),
-                        itemCount: widget.noteNum,
                       )
                     : Center(
                         child: Text(
