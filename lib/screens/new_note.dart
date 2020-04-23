@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:notesapp/models/note.dart';
 import 'package:notesapp/utils/colors.dart';
 import 'package:notesapp/utils/images.dart';
@@ -23,6 +24,8 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
+  String dropdownValue = 'Work';
+
   @override
   void initState() {
     // TODO: implement initState
@@ -34,7 +37,9 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
     Note newNote = Note()
       ..title = titleEditingController.text
       ..description = descriptionEditingController.text
-      ..category = cEditingController.text;
+      ..category = dropdownValue
+      ..dateCreated = DateFormat.yMMMd().format(DateTime.now())
+      ..dateLastEdited = DateFormat.yMMMd().format(DateTime.now());
 
     // store in the database
     await _noteBox.add(newNote);
@@ -76,7 +81,9 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
         backgroundColor: Colors.transparent,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -88,7 +95,9 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
                   TextFormField(
                     controller: titleEditingController,
                     decoration: InputDecoration(
-                        border: UnderlineInputBorder(), hintText: 'Note Title',),
+                      border: UnderlineInputBorder(),
+                      hintText: 'Note Title',
+                    ),
                     keyboardType: TextInputType.text,
                     minLines: 5,
                     maxLines: 5,
@@ -98,8 +107,9 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
                   TextFormField(
                     controller: descriptionEditingController,
                     decoration: InputDecoration(
-                        border: UnderlineInputBorder(),
-                        hintText: 'Note Description',),
+                      border: UnderlineInputBorder(),
+                      hintText: 'Note Description',
+                    ),
                     keyboardType: TextInputType.text,
                     minLines: 10,
                     maxLines: 10,
@@ -109,6 +119,7 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
             ),
             YMargin(20),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Image(
@@ -117,14 +128,67 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
                   image: category,
                   fit: BoxFit.cover,
                 ),
-                Text(
-                  'Category'
-                )
+                XMargin(15),
+                XMargin(5),
+                DropdownButton<String>(
+                  value: dropdownValue,
+                  icon: Icon(Icons.keyboard_arrow_down),
+                  iconSize: 25,
+                  elevation: 16,
+                  underline: YMargin(0),
+                  onChanged: (String newValue) {
+                    setState(() {
+                      dropdownValue = newValue;
+                    });
+                  },
+                  items: <String>[
+                    'Work',
+                    'Music',
+                    'Travel',
+                    'Study',
+                    'Home',
+                    'Play',
+                    'Shop'
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value.toString(),),
+                    );
+                  }).toList(),
+                ),
               ],
             ),
             YMargin(20),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Text(
+                'Last Edited: ${DateFormat.yMMMd().format(
+                  DateTime.now(),
+                )}',
+                style: textStyle(
+                  size: 12,
+                  color: kGreyBlack,
+                  weight: 4,
+                ),
+              ),
+            ),
+            YMargin(5),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Text(
+                'Created: ${DateFormat.yMMMd().format(
+                  DateTime.now(),
+                )}',
+                style: textStyle(
+                  size: 12,
+                  color: kGreyBlack,
+                  weight: 4,
+                ),
+              ),
+            ),
+            YMargin(50),
             GestureDetector(
-              onTap: (){
+              onTap: () {
                 // save the note to the database
                 _saveNote();
 
@@ -156,47 +220,3 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
     );
   }
 }
-
-//TextFormField(
-//controller: tEditingController,
-//decoration: InputDecoration(
-//border: UnderlineInputBorder(
-//),
-//hintText: 'Title'
-//),
-//),
-//YMargin(20),
-//TextFormField(
-//controller: dEditingController,
-//decoration: InputDecoration(
-//border: UnderlineInputBorder(
-//),
-//hintText: 'Description'
-//),
-//),
-//YMargin(20),
-//TextFormField(
-//controller: cEditingController,
-//decoration: InputDecoration(
-//border: UnderlineInputBorder(
-//),
-//hintText: 'Category'
-//),
-//),
-//SizedBox(
-//height: 55,
-//width: screenWidth(context),
-//child: FlatButton(
-//onPressed: () async {
-//
-
-//},
-//color: Colors.blue,
-//child: Center(
-//child: Text(
-//'Save',
-//style: textStyle(color: kWhite),
-//),
-//),
-//),
-//)
