@@ -1,9 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:notesapp/models/note.dart';
+import 'package:notesapp/screens/new_note.dart';
 import 'package:notesapp/utils/colors.dart';
 import 'package:notesapp/utils/margin.dart';
 import 'package:notesapp/utils/resolution.dart';
@@ -101,6 +99,14 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
                 // box without filtering
                 List<dynamic> allBox = box.values.toList();
 
+                // keys
+                List<dynamic> allKeys = box.keys.toList();
+
+                var key = box.get('0');
+
+                // filter keys
+//                allKeys = allKeys;
+
                 // filter the list based on category
                 boxList = boxList
                     .where((element) => element.category == widget.category)
@@ -121,7 +127,11 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
                               onDismissed: (direction) {
                                 setState(
                                   () {
-                                    box.deleteAt(index);
+                                    // delete a note from the box using the list view index
+                                    // box.deleteAt(index);
+
+                                    // deletes a note from the box using the key
+                                    box.delete(box.keyAt(index));
                                     widget.noteNum--;
                                   },
                                 );
@@ -133,19 +143,40 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
                                   ),
                                 );
                               },
-                              child: _myNoteTile(
-                                widget.category == 'All'
-                                    ? allBox[index].title.toString()
-                                    : boxList[index].title,
-                                widget.category == 'All'
-                                    ? allBox[index].description.toString()
-                                    : boxList[index].description,
-                                widget.category == 'All'
-                                    ? allBox[index].dateLastEdited.toString()
-                                    : boxList[index].dateLastEdited.toString(),
+                              child: GestureDetector(
+                                onTap: () async {
+                                  print(box.keyAt(index));
+                                  await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          NewNoteScreen(
+                                        note: box.getAt(index),
+                                        action: 'Update Note',
+                                        noteKey: box.keyAt(index),
+                                      ),
+                                    ),
+                                  );
+                                  setState(() {});
+                                },
+                                child: _myNoteTile(
+                                  widget.category == 'All'
+                                      ? allBox[index].title.toString()
+                                      : boxList[index].title,
+                                  widget.category == 'All'
+                                      ? allBox[index].description.toString()
+                                      : boxList[index].description,
+                                  widget.category == 'All'
+                                      ? allBox[index].dateLastEdited.toString()
+                                      : boxList[index]
+                                          .dateLastEdited
+                                          .toString(),
+                                ),
                               ),
                               background: Container(
-                                padding: EdgeInsets.only(right: 20),
+                                padding: EdgeInsets.only(
+                                  right: 20,
+                                ),
                                 color: Colors.red,
                                 child: Align(
                                   alignment: Alignment.centerRight,

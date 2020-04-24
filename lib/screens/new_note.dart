@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:notesapp/models/note.dart';
@@ -10,6 +11,12 @@ import 'package:notesapp/utils/styles.dart';
 import 'package:path_provider/path_provider.dart';
 
 class NewNoteScreen extends StatefulWidget {
+  final String action;
+  final Note note;
+  final int noteKey;
+
+  NewNoteScreen({this.note, this.action, this.noteKey});
+
   static final String routeName = 'newnotescreen';
   @override
   _NewNoteScreenState createState() => _NewNoteScreenState();
@@ -18,19 +25,33 @@ class NewNoteScreen extends StatefulWidget {
 class _NewNoteScreenState extends State<NewNoteScreen> {
   Box _noteBox;
 
-  TextEditingController titleEditingController = TextEditingController();
-  TextEditingController descriptionEditingController = TextEditingController();
-  TextEditingController cEditingController = TextEditingController();
-
-  final _formKey = GlobalKey<FormState>();
-
-  String dropdownValue = 'Work';
+  TextEditingController titleEditingController;
+  TextEditingController descriptionEditingController;
+  String dropdownValue;
+  String dateCreated;
+  String dateLastEdited;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _openBox();
+
+    titleEditingController = TextEditingController(text: widget.note.title);
+    descriptionEditingController =
+        TextEditingController(text: widget.note.description);
+    dropdownValue =
+        widget.note.category == null ? 'Work' : widget.note.category;
+    dateCreated = widget.note.dateCreated == null
+        ? DateFormat.yMMMd().format(
+            DateTime.now(),
+          )
+        : widget.note.dateCreated;
+    dateLastEdited = widget.note.dateLastEdited != null
+        ? DateFormat.yMMMd().format(
+            DateTime.now(),
+          )
+        : widget.note.dateLastEdited;
   }
 
   void _saveNote() async {
@@ -43,6 +64,18 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
 
     // store in the database
     await _noteBox.add(newNote);
+  }
+
+  void _updateNote() async {
+    Note existingNote = Note()
+      ..title = titleEditingController.text
+      ..description = descriptionEditingController.text
+      ..category = dropdownValue
+      ..dateCreated = widget.note.dateCreated
+      ..dateLastEdited = dateLastEdited;
+
+    // update in the database
+    await _noteBox.put(widget.noteKey, existingNote);
   }
 
   Future _openBox() async {
@@ -81,40 +114,41 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
         backgroundColor: Colors.transparent,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
+        padding: const EdgeInsets.only(
+          left: 20,
+          right: 20,
+          bottom: 20,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  TextFormField(
-                    controller: titleEditingController,
-                    decoration: InputDecoration(
-                      border: UnderlineInputBorder(),
-                      hintText: 'Note Title',
-                    ),
-                    keyboardType: TextInputType.text,
-                    minLines: 5,
-                    maxLines: 5,
-                    expands: false,
+            TextFormField(
+              controller: titleEditingController,
+              decoration: InputDecoration(
+                border: UnderlineInputBorder(
+                  borderSide: BorderSide.none,
+                ),
+                hintText: 'Note Title',
+              ),
+              keyboardType: TextInputType.text,
+              minLines: 2,
+              maxLines: 2,
+              maxLength: 70,
+            ),
+            YMargin(20),
+            Expanded(
+              child: TextFormField(
+                controller: descriptionEditingController,
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(
+                    borderSide: BorderSide.none,
                   ),
-                  YMargin(20),
-                  TextFormField(
-                    controller: descriptionEditingController,
-                    decoration: InputDecoration(
-                      border: UnderlineInputBorder(),
-                      hintText: 'Note Description',
-                    ),
-                    keyboardType: TextInputType.text,
-                    minLines: 10,
-                    maxLines: 10,
-                  ),
-                ],
+                  hintText: 'Note Description',
+                ),
+                keyboardType: TextInputType.text,
+                minLines: 15,
+                maxLines: 15,
               ),
             ),
             YMargin(20),
@@ -129,7 +163,6 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
                   fit: BoxFit.cover,
                 ),
                 XMargin(15),
-//                Text(dropdownValue),
                 XMargin(5),
                 DropdownButton<String>(
                   value: dropdownValue,
@@ -163,9 +196,7 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
             Align(
               alignment: Alignment.bottomRight,
               child: Text(
-                'Last Edited: ${DateFormat.yMMMd().format(
-                  DateTime.now(),
-                )}',
+                'Last Edited: $dateLastEdited',
                 style: textStyle(
                   size: 12,
                   color: kGreyBlack,
@@ -177,9 +208,7 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
             Align(
               alignment: Alignment.bottomRight,
               child: Text(
-                'Created: ${DateFormat.yMMMd().format(
-                  DateTime.now(),
-                )}',
+                'Created: $dateCreated',
                 style: textStyle(
                   size: 12,
                   color: kGreyBlack,
@@ -187,11 +216,16 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
                 ),
               ),
             ),
-            YMargin(50),
+            YMargin(30),
             GestureDetector(
               onTap: () {
-                // save the note to the database
-                _saveNote();
+                widget.action == 'Add Note'
+                    ?
+                    // save the note to the database
+                    _saveNote()
+
+                    // update the note present in the database
+                    : _updateNote();
 
                 // pop
                 Navigator.pop(context);
@@ -205,7 +239,7 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
                 ),
                 child: Center(
                   child: Text(
-                    'Save Note',
+                    widget.action,
                     style: textStyle(
                       color: kWhite,
                       weight: 6,
