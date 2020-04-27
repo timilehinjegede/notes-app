@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:notesapp/models/note.dart';
 import 'package:notesapp/screens/new_note.dart';
 import 'package:notesapp/utils/colors.dart';
 import 'package:notesapp/utils/margin.dart';
@@ -22,8 +23,6 @@ class DetailCategoryScreen extends StatefulWidget {
 }
 
 class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
-  int listLength;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,31 +93,37 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
             child: ValueListenableBuilder(
               valueListenable: Hive.box('noteBox').listenable(),
               builder: (context, box, child) {
-                List<dynamic> boxList = box.values.toList();
-
-                // box without filtering
+                // convert box to a list
                 List<dynamic> allBox = box.values.toList();
 
-                // keys
-                List<dynamic> allKeys = box.keys.toList();
-
-                var key = box.get('0');
-
-                // filter keys
-//                allKeys = allKeys;
+                // convert box to a list
+                List<dynamic> boxList = box.values.toList();
 
                 // filter the list based on category
                 boxList = boxList
                     .where((element) => element.category == widget.category)
                     .toList();
 
-                listLength = allBox.length;
+                // convert the box to a map
+                var noteMap = box.toMap();
+
+                // filter the map based on the category screen the user is on
+                noteMap.removeWhere(
+                    (key, value) => !(value.category == widget.category));
+
+                // create a list that holds all keys in the filtered map
+                List<int> noteKeys = [];
+
+                // add the key of each map entry to the note keys list
+                noteMap.forEach((key, value) {
+                  noteKeys.add(key);
+                });
 
                 return widget.noteNum != 0
                     ? ListView.builder(
                         itemCount: widget.category == 'All'
                             ? allBox.length
-                            : widget.noteNum,
+                            : boxList.length,
                         itemBuilder: (BuildContext context, int index) =>
                             Column(
                           children: <Widget>[
@@ -127,11 +132,9 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
                               onDismissed: (direction) {
                                 setState(
                                   () {
-                                    // delete a note from the box using the list view index
-                                    // box.deleteAt(index);
-
                                     // deletes a note from the box using the key
-                                    box.delete(box.keyAt(index));
+                                    // get the key of the note in the list view by passing the index of the list view to the note keys list
+                                    box.delete(noteKeys.elementAt(index));
                                     widget.noteNum--;
                                   },
                                 );
