@@ -23,19 +23,17 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Hive.registerAdapter(
-      NoteAdapter(),
-    );
     _openBox();
   }
 
-  Future _openBox() async {
+  Future _openBox() async{
+    Hive.registerAdapter(
+      NoteAdapter(),
+    );
     var dir = await getApplicationDocumentsDirectory();
     Hive.init(dir.path);
     _noteBox = await Hive.openBox('noteBox');
-    return;
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
