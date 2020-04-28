@@ -54,6 +54,7 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
         : widget.note.dateLastEdited;
   }
 
+  // save a new note
   void _saveNote() async {
     Note newNote = Note()
       ..title = titleEditingController.text
@@ -66,6 +67,7 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
     await _noteBox.add(newNote);
   }
 
+  // update an exisiting note
   void _updateNote() async {
     Note existingNote = Note()
       ..title = titleEditingController.text
@@ -90,13 +92,21 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text(
-          'New Note',
-          style: textStyle(
-            color: kBlack,
-            weight: 5,
-          ),
-        ),
+        title: widget.action == 'Update Note'
+            ? Text(
+                'Update Note',
+                style: textStyle(
+                  color: kBlack,
+                  weight: 5,
+                ),
+              )
+            : Text(
+                'New Note',
+                style: textStyle(
+                  color: kBlack,
+                  weight: 5,
+                ),
+              ),
         actions: <Widget>[
           IconButton(
             icon: Icon(

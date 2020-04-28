@@ -155,6 +155,7 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
                                           NewNoteScreen(
                                         note: box.getAt(index),
                                         action: 'Update Note',
+                                        // pass the note key to the new note screen
                                         noteKey: box.keyAt(index),
                                       ),
                                     ),
