@@ -165,7 +165,6 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
                                       ),
                                     ),
                                   );
-                                  setState(() {});
                                 },
                                 child: _myNoteTile(
                                   widget.category == 'All'
