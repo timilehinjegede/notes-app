@@ -93,6 +93,7 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
     noteMap.removeWhere((key, value) => !(key == widget.noteKey));
 
     await _noteBox.put(widget.noteKey, existingNote);
+
   }
 
   @override

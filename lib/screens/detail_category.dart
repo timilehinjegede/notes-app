@@ -148,7 +148,6 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
                               },
                               child: GestureDetector(
                                 onTap: () async {
-                                  print(box.keyAt(index));
                                   await Navigator.push(
                                     context,
                                     MaterialPageRoute(
