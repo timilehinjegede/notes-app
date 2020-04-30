@@ -94,7 +94,7 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
               builder: (context, box, child) {
                 // convert box to a list
                 List<dynamic> allBox = box.values.toList();
-
+                dynamic allKeys = box.keys.toList();
                 // convert box to a list
                 List<dynamic> boxList = box.values.toList();
 
@@ -111,11 +111,11 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
                     (key, value) => !(value.category == widget.category));
 
                 // create a list that holds all keys in the filtered map
-                List<int> noteKeys = [];
+                List<int> filteredNoteKeys = [];
 
                 // add the key of each map entry to the note keys list
                 noteMap.forEach((key, value) {
-                  noteKeys.add(key);
+                  filteredNoteKeys.add(key);
                 });
 
                 return widget.noteNum != 0
@@ -133,7 +133,8 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
                                   () {
                                     // deletes a note from the box using the key
                                     // get the key of the note in the list view by passing the index of the list view to the note keys list
-                                    box.delete(noteKeys.elementAt(index));
+                                    box.delete(
+                                        filteredNoteKeys.elementAt(index));
                                     widget.noteNum--;
                                   },
                                 );
@@ -153,10 +154,15 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
                                     MaterialPageRoute(
                                       builder: (BuildContext context) =>
                                           NewNoteScreen(
-                                        note: box.getAt(index),
+                                        note: widget.category == 'All'
+                                            ? box.get(allKeys.elementAt(index))
+                                            : box.get(filteredNoteKeys
+                                                .elementAt(index)),
                                         action: 'Update Note',
                                         // pass the note key to the new note screen
-                                        noteKey: box.keyAt(index),
+                                        noteKey: widget.category == 'All'
+                                            ? allKeys.elementAt(index)
+                                            : filteredNoteKeys.elementAt(index),
                                       ),
                                     ),
                                   );

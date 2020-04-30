@@ -24,6 +24,7 @@ class NewNoteScreen extends StatefulWidget {
 
 class _NewNoteScreenState extends State<NewNoteScreen> {
   Box _noteBox;
+  var passedNote;
 
   TextEditingController titleEditingController;
   TextEditingController descriptionEditingController;
@@ -31,12 +32,21 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
   String dateCreated;
   String dateLastEdited;
 
+  Future _openBox() async {
+    var dir = await getApplicationDocumentsDirectory();
+    Hive.init(dir.path);
+    _noteBox = await Hive.openBox('noteBox');
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _openBox();
+    prepopulateValues();
+  }
 
+  void prepopulateValues() {
     titleEditingController = TextEditingController(text: widget.note.title);
     descriptionEditingController =
         TextEditingController(text: widget.note.description);
@@ -76,15 +86,13 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
       ..dateCreated = widget.note.dateCreated
       ..dateLastEdited = dateLastEdited;
 
-    // update in the database
-    await _noteBox.put(widget.noteKey, existingNote);
-  }
+// convert the box to a map
+    var noteMap = _noteBox.toMap();
 
-  Future _openBox() async {
-    var dir = await getApplicationDocumentsDirectory();
-    Hive.init(dir.path);
-    _noteBox = await Hive.openBox('noteBox');
-    return;
+    // filter the map based on the category screen the user is on
+    noteMap.removeWhere((key, value) => !(key == widget.noteKey));
+
+    await _noteBox.put(widget.noteKey, existingNote);
   }
 
   @override
