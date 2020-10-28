@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:notesapp/utils/colors.dart';
-import 'package:notesapp/utils/margin.dart';
-import 'package:notesapp/utils/resolution.dart';
-import 'package:notesapp/utils/styles.dart';
+import 'package:notesapp/utils/utils.dart';
 import 'package:notesapp/views/screens/new_note.dart';
 
 // ignore: must_be_immutable
@@ -13,9 +11,9 @@ class DetailCategoryScreen extends StatefulWidget {
 
   final String category;
   int noteNum;
-  final AssetImage img;
+  final String imgPath;
 
-  DetailCategoryScreen({this.category, this.noteNum, this.img});
+  DetailCategoryScreen({this.category, this.noteNum, this.imgPath});
 
   @override
   _DetailCategoryScreenState createState() => _DetailCategoryScreenState();
@@ -48,7 +46,7 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  YMargin(20),
+                  YBox(20),
                   Container(
                     height: 50,
                     width: 50,
@@ -56,27 +54,33 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
                       color: kWhite,
                       borderRadius: BorderRadius.circular(25),
                       image: DecorationImage(
-                        image: widget.img,
+                        image: AssetImage(widget.imgPath),
                         fit: BoxFit.contain,
                       ),
                     ),
                   ),
-                  YMargin(10),
+                  YBox(10),
                   Text(
                     widget.category,
-                    style: textStyle(size: 30, weight: 7, color: kWhite),
+                    style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w700,
+                        color: kWhite),
                   ),
-                  YMargin(5),
+                  YBox(5),
                   Text(
                     '${widget.noteNum} ${widget.noteNum > 1 ? 'Notes' : 'Note'}',
-                    style: textStyle(size: 15, weight: 4, color: kWhite),
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                        color: kWhite),
                   )
                 ],
               ),
             ),
           ),
           Container(
-            height: screenHeight(context, percent: 0.66),
+            height: DeviceUtil(context).screenHeight(extent: 0.66),
             padding: EdgeInsets.only(
               top: 20,
               left: 15,
@@ -203,10 +207,10 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
                     : Center(
                         child: Text(
                           'Oops... Empty Category',
-                          style: textStyle(
-                            size: 14,
+                          style: TextStyle(
+                            fontSize: 14,
                             color: kGreyBlack,
-                            weight: 6,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       );
@@ -225,34 +229,34 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen> {
       children: <Widget>[
         Text(
           title,
-          style: textStyle(
-            size: 16,
-            weight: 6,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
           ),
           maxLines: 1,
         ),
-        YMargin(5),
+        YBox(5),
         Text(
           description,
-          style: textStyle(
-            size: 14,
+          style: TextStyle(
+            fontSize: 14,
             color: kGreyBlack,
-            weight: 5,
+            fontWeight: FontWeight.w500,
           ),
           maxLines: 3,
           textAlign: TextAlign.start,
           overflow: TextOverflow.ellipsis,
           softWrap: true,
         ),
-        YMargin(10),
+        YBox(10),
         Align(
           alignment: Alignment.bottomRight,
           child: Text(
             dateLastModified,
-            style: textStyle(
-              size: 12,
+            style: TextStyle(
+              fontSize: 12,
               color: kGrey,
-              weight: 6,
+              fontWeight: FontWeight.w600,
             ),
           ),
         )

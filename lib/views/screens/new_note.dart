@@ -4,10 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:notesapp/core/models/note.dart';
 import 'package:notesapp/utils/colors.dart';
-import 'package:notesapp/utils/images.dart';
-import 'package:notesapp/utils/margin.dart';
-import 'package:notesapp/utils/resolution.dart';
-import 'package:notesapp/utils/styles.dart';
+import 'package:notesapp/utils/utils.dart';
 
 class NewNoteScreen extends StatefulWidget {
   final String action;
@@ -94,16 +91,16 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
         title: widget.action == 'Update Note'
             ? Text(
                 'Update Note',
-                style: textStyle(
+                style: TextStyle(
                   color: kBlack,
-                  weight: 5,
+                  fontWeight: FontWeight.w500,
                 ),
               )
             : Text(
                 'New Note',
-                style: textStyle(
+                style: TextStyle(
                   color: kBlack,
-                  weight: 5,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
         actions: <Widget>[
@@ -145,7 +142,7 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
               maxLines: 2,
               maxLength: 70,
             ),
-            YMargin(20),
+            YBox(20),
             Expanded(
               child: TextFormField(
                 controller: descriptionEditingController,
@@ -160,7 +157,7 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
                 maxLines: 15,
               ),
             ),
-            YMargin(20),
+            YBox(20),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
@@ -168,17 +165,17 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
                 Image(
                   height: 30,
                   width: 30,
-                  image: category,
+                  image: AssetImage(categoryImgPath),
                   fit: BoxFit.cover,
                 ),
-                XMargin(15),
-                XMargin(5),
+                XBox(15),
+                XBox(5),
                 DropdownButton<String>(
                   value: dropdownValue,
                   icon: Icon(Icons.keyboard_arrow_down),
                   iconSize: 25,
                   elevation: 16,
-                  underline: YMargin(0),
+                  underline: YBox(0),
                   onChanged: (String newValue) {
                     setState(() {
                       dropdownValue = newValue;
@@ -201,31 +198,31 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
                 ),
               ],
             ),
-            YMargin(20),
+            YBox(20),
             Align(
               alignment: Alignment.bottomRight,
               child: Text(
                 'Last Edited: $dateLastEdited',
-                style: textStyle(
-                  size: 12,
+                style: TextStyle(
+                  fontSize: 12,
                   color: kGreyBlack,
-                  weight: 4,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
             ),
-            YMargin(5),
+            YBox(5),
             Align(
               alignment: Alignment.bottomRight,
               child: Text(
                 'Created: $dateCreated',
-                style: textStyle(
-                  size: 12,
+                style: TextStyle(
+                  fontSize: 12,
                   color: kGreyBlack,
-                  weight: 4,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
             ),
-            YMargin(30),
+            YBox(30),
             GestureDetector(
               onTap: () {
                 widget.action == 'Add Note'
@@ -241,7 +238,7 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
               },
               child: Container(
                 height: 55,
-                width: screenWidth(context),
+                width: DeviceUtil(context).screenWidth(),
                 decoration: BoxDecoration(
                   color: Colors.blue,
                   borderRadius: BorderRadius.circular(5),
@@ -249,10 +246,10 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
                 child: Center(
                   child: Text(
                     widget.action,
-                    style: textStyle(
+                    style: TextStyle(
                       color: kWhite,
-                      weight: 6,
-                      size: 18,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
                     ),
                   ),
                 ),

@@ -1,0 +1,10 @@
+const String baseImgPath = 'assets/images';
+const String allImgPath = '$baseImgPath/all.png';
+const String workImgPath = '$baseImgPath/work.png';
+const String musicImgPath = '$baseImgPath/music.png';
+const String travelImgPath = '$baseImgPath/travel.png';
+const String studyImgPath = '$baseImgPath/study.png';
+const String homeImgPath = '$baseImgPath/home.png';
+const String playImgPath = '$baseImgPath/play.png';
+const String shopImgPath = '$baseImgPath/shop.png';
+const String categoryImgPath = '$baseImgPath/category.png';

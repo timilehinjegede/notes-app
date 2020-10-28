@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:notesapp/utils/colors.dart';
-import 'package:notesapp/utils/images.dart';
-import 'package:notesapp/utils/styles.dart';
+import 'package:notesapp/utils/strings.dart';
 import 'package:notesapp/views/screens/detail_category.dart';
 import 'package:notesapp/views/screens/new_note.dart';
 import 'package:notesapp/views/widgets/custom_card.dart';
@@ -36,10 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: EdgeInsets.fromLTRB(20, 50, 20, 30),
             child: Text(
               'Lists',
-              style: textStyle(
-                size: 32,
+              style: TextStyle(
+                fontSize: 32,
                 color: Colors.black,
-                weight: 5,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ),
@@ -73,14 +72,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           MaterialPageRoute(
                             builder: (context) => DetailCategoryScreen(
                               category: 'All',
-                              img: all,
+                              imgPath: allImgPath,
                               noteNum: boxList.length,
                             ),
                           ),
                         ),
                         child: CustomCard(
                           title: 'All',
-                          imgPath: all,
+                          imgPath: allImgPath,
                           taskNum: boxList.length,
                         ),
                       ),
@@ -90,14 +89,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           MaterialPageRoute(
                             builder: (context) => DetailCategoryScreen(
                               category: 'Work',
-                              img: music,
+                              imgPath: musicImgPath,
                               noteNum: fromList('Work'),
                             ),
                           ),
                         ),
                         child: CustomCard(
                           title: 'Work',
-                          imgPath: work,
+                          imgPath: workImgPath,
                           taskNum: fromList('Work'),
                         ),
                       ),
@@ -107,14 +106,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           MaterialPageRoute(
                             builder: (context) => DetailCategoryScreen(
                               category: 'Music',
-                              img: music,
+                              imgPath: musicImgPath,
                               noteNum: fromList('Music'),
                             ),
                           ),
                         ),
                         child: CustomCard(
                           title: 'Music',
-                          imgPath: music,
+                          imgPath: musicImgPath,
                           taskNum: fromList('Music'),
                         ),
                       ),
@@ -124,14 +123,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           MaterialPageRoute(
                             builder: (context) => DetailCategoryScreen(
                               category: 'Travel',
-                              img: travel,
+                              imgPath: travelImgPath,
                               noteNum: fromList('Travel'),
                             ),
                           ),
                         ),
                         child: CustomCard(
                           title: 'Travel',
-                          imgPath: travel,
+                          imgPath: travelImgPath,
                           taskNum: fromList('Travel'),
                         ),
                       ),
@@ -141,14 +140,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           MaterialPageRoute(
                             builder: (context) => DetailCategoryScreen(
                               category: 'Study',
-                              img: study,
+                              imgPath: studyImgPath,
                               noteNum: fromList('Study'),
                             ),
                           ),
                         ),
                         child: CustomCard(
                           title: 'Study',
-                          imgPath: study,
+                          imgPath: studyImgPath,
                           taskNum: fromList('Study'),
                         ),
                       ),
@@ -158,14 +157,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           MaterialPageRoute(
                             builder: (context) => DetailCategoryScreen(
                               category: 'Home',
-                              img: home,
+                              imgPath: homeImgPath,
                               noteNum: fromList('Home'),
                             ),
                           ),
                         ),
                         child: CustomCard(
                           title: 'Home',
-                          imgPath: home,
+                          imgPath: homeImgPath,
                           taskNum: fromList('Home'),
                         ),
                       ),
@@ -175,14 +174,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           MaterialPageRoute(
                             builder: (context) => DetailCategoryScreen(
                               category: 'Play',
-                              img: play,
+                              imgPath: playImgPath,
                               noteNum: fromList('Play'),
                             ),
                           ),
                         ),
                         child: CustomCard(
                           title: 'Play',
-                          imgPath: play,
+                          imgPath: playImgPath,
                           taskNum: fromList('Play'),
                         ),
                       ),
@@ -192,14 +191,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           MaterialPageRoute(
                             builder: (context) => DetailCategoryScreen(
                               category: 'Shop',
-                              img: shop,
+                              imgPath: shopImgPath,
                               noteNum: fromList('Shop'),
                             ),
                           ),
                         ),
                         child: CustomCard(
                           title: 'Shop',
-                          imgPath: shop,
+                          imgPath: shopImgPath,
                           taskNum: fromList('Shop'),
                         ),
                       ),
