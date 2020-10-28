@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
-import 'package:notesapp/database/database.dart';
 import 'package:notesapp/models/note.dart';
-import 'package:notesapp/screens/detail_category.dart';
 import 'package:notesapp/screens/home.dart';
 import 'package:notesapp/screens/new_note.dart';
 import 'package:path_provider/path_provider.dart';
@@ -24,19 +22,7 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    // TODO: implement initState
-//    openBox();
-    super.initState();
-  }
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

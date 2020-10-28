@@ -8,7 +8,6 @@ import 'package:notesapp/utils/images.dart';
 import 'package:notesapp/utils/margin.dart';
 import 'package:notesapp/utils/resolution.dart';
 import 'package:notesapp/utils/styles.dart';
-import 'package:path_provider/path_provider.dart';
 
 class NewNoteScreen extends StatefulWidget {
   final String action;
@@ -32,17 +31,9 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
   String dateCreated;
   String dateLastEdited;
 
-  Future _openBox() async {
-    var dir = await getApplicationDocumentsDirectory();
-    Hive.init(dir.path);
-    _noteBox = await Hive.openBox('noteBox');
-  }
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _openBox();
     prepopulateValues();
   }
 
@@ -93,7 +84,6 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
     noteMap.removeWhere((key, value) => !(key == widget.noteKey));
 
     await _noteBox.put(widget.noteKey, existingNote);
-
   }
 
   @override

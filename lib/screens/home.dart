@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:notesapp/models/note.dart';
 import 'package:notesapp/screens/detail_category.dart';
 import 'package:notesapp/screens/new_note.dart';
 import 'package:notesapp/screens/widgets/custom_card.dart';
 import 'package:notesapp/utils/colors.dart';
 import 'package:notesapp/utils/images.dart';
 import 'package:notesapp/utils/styles.dart';
-import 'package:path_provider/path_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -16,24 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // creating a box to store data
-  Box _noteBox;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-//    _openBox();
-  }
-
-  Future _openBox() async{
-    Hive.registerAdapter(
-      NoteAdapter(),
-    );
-    var dir = await getApplicationDocumentsDirectory();
-    Hive.init(dir.path);
-    _noteBox = await Hive.openBox('noteBox');
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +46,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ValueListenableBuilder(
             valueListenable: Hive.box('noteBox').listenable(),
             builder: (context, box, widget) {
-
               // convert box value into a list
               List<dynamic> boxList = box.values.toList();
 
@@ -76,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     .toList()
                     .length;
               }
+
               return Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10),
