@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:notesapp/models/note.dart';
+import 'package:notesapp/core/models/note.dart';
 import 'package:notesapp/utils/colors.dart';
 import 'package:notesapp/utils/images.dart';
 import 'package:notesapp/utils/margin.dart';

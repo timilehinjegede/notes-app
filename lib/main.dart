@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
-import 'package:notesapp/models/note.dart';
-import 'package:notesapp/screens/home.dart';
-import 'package:notesapp/screens/new_note.dart';
+import 'package:notesapp/core/models/note.dart';
+import 'package:notesapp/views/screens/home.dart';
+import 'package:notesapp/views/screens/new_note.dart';
 import 'package:path_provider/path_provider.dart';
 
 Future openBox() async {

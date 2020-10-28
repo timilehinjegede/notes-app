@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:notesapp/screens/detail_category.dart';
-import 'package:notesapp/screens/new_note.dart';
-import 'package:notesapp/screens/widgets/custom_card.dart';
 import 'package:notesapp/utils/colors.dart';
 import 'package:notesapp/utils/images.dart';
 import 'package:notesapp/utils/styles.dart';
+import 'package:notesapp/views/screens/detail_category.dart';
+import 'package:notesapp/views/screens/new_note.dart';
+import 'package:notesapp/views/widgets/custom_card.dart';
 
 class HomeScreen extends StatefulWidget {
   @override

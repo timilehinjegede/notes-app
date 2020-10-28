@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:notesapp/screens/new_note.dart';
 import 'package:notesapp/utils/colors.dart';
 import 'package:notesapp/utils/margin.dart';
 import 'package:notesapp/utils/resolution.dart';
 import 'package:notesapp/utils/styles.dart';
+import 'package:notesapp/views/screens/new_note.dart';
 
 // ignore: must_be_immutable
 class DetailCategoryScreen extends StatefulWidget {

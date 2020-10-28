@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:hive/hive.dart';
-import 'package:notesapp/models/note.dart';
+import 'package:notesapp/core/models/note.dart';
 
 class DatabaseService {
 
