@@ -31,6 +31,7 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
   @override
   void initState() {
     super.initState();
+    _noteBox = Hive.box('noteBox');
     prepopulateValues();
   }
 

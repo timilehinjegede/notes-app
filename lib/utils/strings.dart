@@ -7,4 +7,4 @@ const String studyImgPath = '$baseImgPath/study.png';
 const String homeImgPath = '$baseImgPath/home.png';
 const String playImgPath = '$baseImgPath/play.png';
 const String shopImgPath = '$baseImgPath/shop.png';
-const String categoryImgPath = '$baseImgPath/category.png';
+const String categoryImgPath = '$baseImgPath/tag.png';
