@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _openBox();
+//    _openBox();
   }
 
   Future _openBox() async{

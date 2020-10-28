@@ -21,6 +21,7 @@ Future openBox() async {
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  openBox();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MyApp());
 }
@@ -34,7 +35,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     // TODO: implement initState
-    openBox();
+//    openBox();
     super.initState();
   }
 
