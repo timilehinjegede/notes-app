@@ -8,20 +8,18 @@ import 'package:notesapp/screens/home.dart';
 import 'package:notesapp/screens/new_note.dart';
 import 'package:path_provider/path_provider.dart';
 
-
 Future openBox() async {
-  Box _noteBox;
+  var dir = await getApplicationDocumentsDirectory();
+  Hive.init(dir.path);
   Hive.registerAdapter(
     NoteAdapter(),
   );
-  var dir = await getApplicationDocumentsDirectory();
-  Hive.init(dir.path);
-  _noteBox = await Hive.openBox('noteBox');
+  await Hive.openBox('noteBox');
 }
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  openBox();
+  await openBox();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MyApp());
 }
